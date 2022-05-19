@@ -65,5 +65,5 @@ secondary = true
 
 [[tool.poetry.source]]
 name = "tensorflow-aarch64"
-url = "https://snapshots.linaro.org/ldcg/python-cache"
+url = "https://snapshots.linaro.org/ldcg/python/tensorflow-manylinux/43/tensorflow-aarch64"
 secondary = true
