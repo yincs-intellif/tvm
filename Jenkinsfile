@@ -45,18 +45,27 @@
 // 'python3 jenkins/generate.py'
 // Note: This timestamp is here to ensure that updates to the Jenkinsfile are
 // always rebased on main before merging:
-// Generated at 2022-06-10T14:16:52.019357
+// Generated at 2022-07-12T14:47:14.697216
 
 import org.jenkinsci.plugins.pipeline.modeldefinition.Utils
 // NOTE: these lines are scanned by docker/dev_common.sh. Please update the regex as needed. -->
-ci_lint = 'tlcpack/ci-lint:20220630-060117-558ba99c7'
-ci_gpu = 'tlcpack/ci-gpu:20220630-060117-558ba99c7'
-ci_cpu = 'tlcpack/ci-cpu:20220630-060117-558ba99c7'
-ci_wasm = 'tlcpack/ci-wasm:20220630-060117-558ba99c7'
-ci_i386 = 'tlcpack/ci-i386:20220630-060117-558ba99c7'
-ci_qemu = 'tlcpack/ci-qemu:20220630-060117-558ba99c7'
-ci_arm = 'tlcpack/ci-arm:20220630-060117-558ba99c7'
-ci_hexagon = 'tlcpack/ci-hexagon:20220630-060117-558ba99c7'
+def aws_account_id = ''
+node("CPU-SMALL") {
+aws_account_id = sh(
+    returnStdout: true,
+    script: 'aws sts get-caller-identity | grep Account | cut -f4 -d\\"',
+    label: 'Get AWS ID'
+  ).trim()
+}
+def AWS_DEFAULT_REGION = 'us-west-2'
+ci_lint = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_lint:areusch-2ffreeze-dependencies-4233ca6eb-49"
+ci_gpu = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_gpu:areusch-2ffreeze-dependencies-6799bd6f9-49"
+ci_cpu = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_cpu:areusch-2ffreeze-dependencies-98aa6dde6-49"
+ci_wasm = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_wasm:areusch-2ffreeze-dependencies-c12a78740-49"
+ci_i386 = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_i386:areusch-2ffreeze-dependencies-89e22c948-49"
+ci_qemu = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_qemu:areusch-2ffreeze-dependencies-e839c36c8-48"
+ci_arm = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_arm:areusch-2ffreeze-dependencies-b9d48a35f-49"
+ci_hexagon = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_hexagon:areusch-2ffreeze-dependencies-e7d44544e-49"
 // <--- End of regex-scanned config.
 
 // Parameters to allow overriding (in Jenkins UI), the images
@@ -85,6 +94,15 @@ docker_build = 'docker/build.sh'
 // timeout in minutes
 max_time = 180
 rebuild_docker_images = false
+
+// skips builds from branch indexing; sourced from https://www.jvt.me/posts/2020/02/23/jenkins-multibranch-skip-branch-index/
+// execute this before anything else, including requesting any time on an agent
+if (currentBuild.getBuildCauses().toString().contains('BranchIndexingCause')) {
+  print "INFO: Build skipped due to trigger being Branch Indexing"
+  currentBuild.result = 'ABORTED' // optional, gives a better hint to the user that it's been skipped, rather than the default which shows it's successful
+  return
+}
+
 
 // Filenames for stashing between build and test steps
 s3_prefix = "tvm-jenkins-artifacts-prod/tvm/${env.BRANCH_NAME}/${env.BUILD_NUMBER}"
@@ -529,7 +547,8 @@ def lint() {
           withEnv([
             'TVM_NUM_SHARDS=2',
             'TVM_SHARD_INDEX=0'], {
-            sh (
+            docker_init(ci_lint)
+              sh (
                 script: "${docker_run} ${ci_lint} ./tests/scripts/task_lint.sh",
                 label: 'Run lint',
               )
@@ -547,7 +566,8 @@ def lint() {
           withEnv([
             'TVM_NUM_SHARDS=2',
             'TVM_SHARD_INDEX=1'], {
-            sh (
+            docker_init(ci_lint)
+              sh (
                 script: "${docker_run} ${ci_lint} ./tests/scripts/task_lint.sh",
                 label: 'Run lint',
               )
@@ -644,6 +664,7 @@ stage('Build') {
         ws("workspace/exec_${env.EXECUTOR_NUMBER}/tvm/build-gpu") {
           docker_init(ci_gpu)
           init_git()
+          docker_init(ci_gpu)
           sh "${docker_run} --no-gpu ${ci_gpu} ./tests/scripts/task_config_build_gpu.sh build"
           make("${ci_gpu} --no-gpu", 'build', '-j2')
           sh(
@@ -691,6 +712,7 @@ stage('Build') {
         ws("workspace/exec_${env.EXECUTOR_NUMBER}/tvm/build-cpu") {
           docker_init(ci_cpu)
           init_git()
+          docker_init(ci_cpu)
           sh (
             script: "${docker_run} ${ci_cpu} ./tests/scripts/task_config_build_cpu.sh build",
             label: 'Create CPU cmake config',
@@ -731,6 +753,7 @@ stage('Build') {
         ws("workspace/exec_${env.EXECUTOR_NUMBER}/tvm/build-wasm") {
           docker_init(ci_wasm)
           init_git()
+          docker_init(ci_wasm)
           sh (
             script: "${docker_run} ${ci_wasm} ./tests/scripts/task_config_build_wasm.sh build",
             label: 'Create WASM cmake config',
@@ -756,6 +779,7 @@ stage('Build') {
         ws("workspace/exec_${env.EXECUTOR_NUMBER}/tvm/build-i386") {
           docker_init(ci_i386)
           init_git()
+          docker_init(ci_i386)
           sh (
             script: "${docker_run} ${ci_i386} ./tests/scripts/task_config_build_i386.sh build",
             label: 'Create i386 cmake config',
@@ -790,6 +814,7 @@ stage('Build') {
         ws("workspace/exec_${env.EXECUTOR_NUMBER}/tvm/build-arm") {
           docker_init(ci_arm)
           init_git()
+          docker_init(ci_arm)
           sh (
             script: "${docker_run} ${ci_arm} ./tests/scripts/task_config_build_arm.sh build",
             label: 'Create ARM cmake config',
@@ -822,6 +847,7 @@ stage('Build') {
         ws("workspace/exec_${env.EXECUTOR_NUMBER}/tvm/build-qemu") {
           docker_init(ci_qemu)
           init_git()
+          docker_init(ci_qemu)
           sh (
             script: "${docker_run} ${ci_qemu} ./tests/scripts/task_config_build_qemu.sh build",
             label: 'Create QEMU cmake config',
@@ -853,6 +879,7 @@ stage('Build') {
         ws("workspace/exec_${env.EXECUTOR_NUMBER}/tvm/build-hexagon") {
           docker_init(ci_hexagon)
           init_git()
+          docker_init(ci_hexagon)
           sh (
             script: "${docker_run} ${ci_hexagon} ./tests/scripts/task_config_build_hexagon.sh build",
             label: 'Create Hexagon cmake config',
@@ -3128,6 +3155,7 @@ stage('Test') {
               docker_init(ci_cpu)
               init_git()
               withEnv(['PLATFORM=cpu'], {
+                docker_init(ci_cpu)
                 sh(
                         script: """
                           set -eux
@@ -3181,6 +3209,7 @@ stage('Test') {
               docker_init(ci_qemu)
               init_git()
               withEnv(['PLATFORM=qemu'], {
+                docker_init(ci_qemu)
                 sh(
                         script: """
                           set -eux
@@ -3234,6 +3263,7 @@ stage('Test') {
               docker_init(ci_cpu)
               init_git()
               withEnv(['PLATFORM=cpu'], {
+                docker_init(ci_cpu)
                 sh(
                         script: """
                           set -eux
@@ -3279,6 +3309,7 @@ stage('Test') {
         ws("workspace/exec_${env.EXECUTOR_NUMBER}/tvm/docs-python-gpu") {
           docker_init(ci_gpu)
           init_git()
+          docker_init(ci_gpu)
           sh(
             script: """
               set -eux
@@ -3405,6 +3436,7 @@ def deploy() {
     if (env.BRANCH_NAME == 'main' && env.DOCS_DEPLOY_ENABLED == 'yes') {
       node('CPU') {
         ws("workspace/exec_${env.EXECUTOR_NUMBER}/tvm/deploy-docs") {
+          docker_init(ci_gpu)
           sh(
             script: """
               set -eux
@@ -3462,9 +3494,9 @@ cancel_previous_build()
 
 prepare()
 
-if (rebuild_docker_images) {
-  build_docker_images()
-}
+// if (rebuild_docker_images) {
+//  build_docker_images()
+// }
 
 lint()
 
