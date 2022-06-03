@@ -16,6 +16,7 @@
 # under the License.
 "concatenate related operators"
 from typing import Optional
+import numpy as np
 import tvm
 from tvm import te
 import numpy as np
