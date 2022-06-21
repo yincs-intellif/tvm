@@ -310,7 +310,7 @@ CONSTRAINTS = [
         ["==*; 'importer-tensorflow' not in extra and 'importer-tflite' not in extra"],
     ),
     ("pillow", []),
-    ("protobuf", []),
+    ("protobuf", ["<4"]),  # Work around #11545
     ("psutil", []),
     ("pylint", []),
     ("scikit-image", []),
