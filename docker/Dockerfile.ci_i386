@@ -59,7 +59,6 @@ COPY python/build/pyproject.toml /install/python/pyproject.toml
 COPY python/build/poetry.lock /install/python/poetry.lock
 COPY install/ubuntu_install_python_package.sh /install/ubuntu_install_python_package.sh
 RUN bash /install/ubuntu_install_python_package.sh \
-    -E tvmc \
     -E xgboost \
     ;
 
