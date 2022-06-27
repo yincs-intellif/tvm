@@ -44,6 +44,7 @@ apt-get update && apt-install-and-clear -y --no-install-recommends \
     ninja-build \
     parallel \
     pkg-config \
+    software-properties-common \
     sudo \
     unzip \
     wget \
