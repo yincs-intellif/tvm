@@ -50,7 +50,7 @@ apt-get update && apt-install-and-clear -y --no-install-recommends \
     wget \
 
 wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | gpg --dearmor - | sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
-echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ bionic main' | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
 apt-get update && apt-install-and-clear -y --no-install-recommends \
     cmake=3.16.5-0kitware1 \
     cmake-data=3.16.5-0kitware1 \
