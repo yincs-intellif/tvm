@@ -33,15 +33,6 @@ sudo apt-install-and-clear -y --no-install-recommends \
      python3-dev python3-pip python3-setuptools python3-tk python3-wheel python3-venv \
      xz-utils file make gcc gcc-multilib g++-multilib apt-transport-https
 
-wget --no-verbose https://apt.kitware.com/keys/kitware-archive-latest.asc
-sudo apt-key add kitware-archive-latest.asc
-
-echo deb https://apt.kitware.com/ubuntu/ bionic main\
-     >> /etc/apt/sources.list.d/kitware.list
-sudo apt-get update
-
-sudo apt-install-and-clear -y cmake
-
 python3 -mvenv /venv/west
 . /venv/west/bin/activate
 pip3 install -U pip
