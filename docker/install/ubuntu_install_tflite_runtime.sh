@@ -36,5 +36,6 @@ cd ..
 # The library is built at:
 # tensorflow/tensorflow/lite/tools/make/gen/*/lib/libtensorflow-lite.a.
 git clone https://github.com/tensorflow/tensorflow --branch=v${TENSORFLOW_VERSION} --depth 1
-./tensorflow/tensorflow/lite/tools/make/download_dependencies.sh
-./tensorflow/tensorflow/lite/tools/make/build_lib.sh
+mkdir tflite-build && cd tflite-build
+cmake ../tensorflow/tensorflow/lite
+cmake --build . -j
