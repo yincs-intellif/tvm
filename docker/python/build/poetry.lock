@@ -2396,12 +2396,12 @@ importer-pytorch = ["future", "torch", "torchvision"]
 importer-tensorflow = ["tensorflow", "tensorflow-estimator"]
 importer-tflite = ["tensorflow", "tensorflow-estimator", "tflite"]
 tvmc = ["ethos-u-vela", "future", "onnx", "onnxoptimizer", "onnxruntime", "paddlepaddle", "tensorflow", "tflite", "torch", "torchvision", "xgboost"]
-xgboost = ["future", "torch", "xgboost"]
+xgboost = ["future", "xgboost"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7, <3.9"
-content-hash = "4e0cbfe86d4e7077094433a2c07b8ca00f228d6f5be6a0952d3b535dade8783f"
+content-hash = "559f23b1fa6c5181fb8c7b856d1d7ee65405586e089871ed7de5f0fc1e6080e4"
 
 [metadata.files]
 absl-py = [

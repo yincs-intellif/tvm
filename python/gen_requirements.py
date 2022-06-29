@@ -204,7 +204,6 @@ REQUIREMENTS_BY_PIECE: RequirementsByPieceType = [
             "Requirements for XGBoost autotuning",
             [
                 "future",  # Hidden dependency of torch.
-                "torch",
                 "xgboost",
             ],
         ),
