@@ -1,4 +1,4 @@
 # These packages are needed for the base Python environment in TVM docker images.
 pip
-poetry
+poetry=1.2.0b2
 setuptools

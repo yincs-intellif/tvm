@@ -34,9 +34,12 @@ description = ""
 
 [tool.poetry.dependencies]
 python = ">=3.7,<3.9"
+pip = "*"
+poetry = "1.2.0b1"
+setuptools = "*"
 EOF
 
-cat requirements.txt | (while read line; do echo "$line = \"*\"" >>build/pyproject.toml; done)
+#cat requirements.txt | (while read line; do echo "$line = \"*\"" >>build/pyproject.toml; done)
 
 python3 -mvenv build/_venv
 . build/_venv/bin/activate
