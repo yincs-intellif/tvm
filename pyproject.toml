@@ -54,14 +54,19 @@ version = "0.8.0"
 description = "Open source Deep Learning compliation toolkit"
 
 [[tool.poetry.source]]
+name = "custom-pypi"
+url = "https://pypi.org/simple/"
+default = true
+
+[[tool.poetry.source]]
 name = "oneflow"
 url = "https://release.oneflow.info"
 secondary = true
 
-#[[tool.poetry.source]]
-#name = "onnx"
-#url = "https://download.pytorch.org/whl/cpu"
-#secondary = true
+[[tool.poetry.source]]
+name = "torch"
+url = "http://download.pytorch.org/whl/cpu"
+secondary = true
 
 [[tool.poetry.source]]
 name = "tensorflow-aarch64"

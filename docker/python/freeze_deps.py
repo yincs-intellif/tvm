@@ -17,14 +17,22 @@
 # under the License.
 
 import argparse
+import contextlib
+import http.server
 import importlib
 import pathlib
+import os
 import re
 import shutil
+import socketserver
 import subprocess
 import sys
 import tempfile
+import threading
 import typing
+import urllib
+
+import requests
 
 
 SECTION_RE = re.compile(r"\[([^]]+)\].*")
@@ -89,6 +97,9 @@ def write_dependencies(requirements_by_piece: dict, constraints: dict, output_f)
             if constraint.environment_marker
             else ""
         )
+
+        marker += f', source = "{"torch" if package.startswith("torch") else "custom-pypi"}"'
+
         output_f.write(
             f"{package} = {{ version = \"{constraint.constraint or '*'}\", optional = {str(optional).lower()}{marker} }}\n"
         )
@@ -116,7 +127,7 @@ def write_dev_dependencies(requirements_by_piece: dict, constraints: dict, outpu
         if package not in dev_packages:
             continue
 
-        output_f.write(f"{package} = \"{constraint.constraint or '*'}\"\n")
+        output_f.write(f"{package} = {{ version = \"{constraint.constraint or '*'}\", source = \"custom-pypi\" }}\n")
 
     output_f.write("\n")
 
@@ -252,18 +263,60 @@ def generate_pyproject_toml(
         assert next_stop[0] is None, f"Did not write all sections. Remaining: {next_stop}"
 
 
-def freeze_deps(output_pyproject_toml):
+class ProxyHandler(http.server.SimpleHTTPRequestHandler):
+
+    def do_GET(self):
+        print("GET", self.path)
+        if '?' in self.path:
+            hier_part, query = self.path.split('?', 1)
+        else:
+            hier_part, query = self.path, ''
+        url = urllib.parse.urlunparse((self.protocol_version.split('/', 1)[0].lower(), self.headers["Host"], hier_part, '', query, ''))
+        req = requests.get(self.path, stream=True)
+        if self.headers["Host"] == "download.pytorch.org" and req.status_code == 403:
+            self.send_error(404, message="proxy patching")
+            return
+
+        self.send_response(req.status_code)
+        self.end_headers()
+        for chunk in req.iter_content(chunk_size=10 * 1024 * 1024):
+            self.wfile.write(chunk)
+
+
+@contextlib.contextmanager
+def launch_proxy():
+    with socketserver.TCPServer(("127.0.0.1", 0), ProxyHandler) as http_proxy:
+        with socketserver.TCPServer(("127.0.0.1", 0), ProxyHandler) as https_proxy:
+            http_addr = http_proxy.server_address
+            def run_http_proxy():
+                http_proxy.serve_forever()
+
+        httpd = threading.Thread(target=run_http_proxy, daemon=True)
+        httpd.start()
+        try:
+            print("proxy serving at ", http_addr)
+            yield http_addr
+        finally:
+            http_proxy.server_close()
+
+
+def freeze_deps(output_pyproject_toml, proxy):
     with open(output_pyproject_toml.parent / "poetry-lock.log", "w") as f:
         # Disable parallel fetching which tends to result in "Connection aborted" errors.
         # https://github.com/python-poetry/poetry/issues/3219
         subprocess.check_call(
             ["poetry", "config", "installer.parallel", "false"], cwd=output_pyproject_toml.parent
         )
+
+        env = dict(os.environ)
+        env["HTTP_PROXY"] = f"http://{proxy[0]}:{proxy[1]}"
+#        env["HTTPS_PROXY"] = "http://{proxy}"
         subprocess.check_call(
-            ["poetry", "lock", "-vv"],
+            ["poetry", "lock", "-vvv"],
             stdout=f,
             stderr=subprocess.STDOUT,
             cwd=output_pyproject_toml.parent,
+            env=env,
         )
 
 
@@ -317,7 +370,9 @@ def main(argv: typing.List[str]):
     )
     with open(pyproject_toml) as f:
         print(f.read())
-    freeze_deps(pyproject_toml)
+
+    with launch_proxy() as proxy:
+        freeze_deps(pyproject_toml, proxy)
 
 
 if __name__ == "__main__":
