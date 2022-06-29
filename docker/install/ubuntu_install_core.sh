@@ -50,7 +50,26 @@ apt-get update && apt-install-and-clear -y --no-install-recommends \
     wget \
 
 wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | gpg --dearmor - | sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
-echo "deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+os_release=$(lsb_release -sc)
+echo "deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ ${os_release} main" | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+
+arch=$(dpkg-architecture -q DEB_HOST_ARCH)
+case "${arch}-${os_release}" in
+    amd64-bionic|i386-bionic)
+        cmake_version=3.16.1-0kitware1
+        ;;
+    amd64-focal|i386-focal)
+        cmake_version=3.17.2-0kitware1
+        ;;
+    arm64-focal)
+        cmake_version=3.19.0-0kitware1
+        ;;
+    *)
+        echo "Don't know which version of cmake to install for dpkg-architecture -q DEB_HOST_ARCH ${arch} and lsb_release -sc: ${os_release}"
+        exit 2
+        ;;
+esac
+
 apt-get update && apt-install-and-clear -y --no-install-recommends \
-    cmake=3.17.2-0kitware1 \
-    cmake-data=3.17.2-0kitware1 \
+    cmake=${cmake_version} \
+    cmake-data=${cmake_version} \
