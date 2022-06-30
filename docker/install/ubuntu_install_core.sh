@@ -28,6 +28,7 @@ apt-get update && apt-install-and-clear -y --no-install-recommends \
     apt-transport-https \
     ca-certificates \
     curl \
+    dirmngr \
     g++ \
     gdb \
     git \
@@ -53,16 +54,22 @@ wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | gpg --dearmo
 os_release=$(lsb_release -sc)
 echo "deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ ${os_release} main" | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
 
+# NOTE: to determine the package versions available, go to the Packages manifest
+# e.g. https://apt.kitware.com/ubuntu/dists/${os_release}/main/binary-${arch}/Packages
+# (substitute the vars) and find the oldest cmake version supported.
 arch=$(dpkg-architecture -q DEB_HOST_ARCH)
 case "${arch}-${os_release}" in
     amd64-bionic|i386-bionic)
         cmake_version=3.16.1-0kitware1
         ;;
     amd64-focal|i386-focal)
-        cmake_version=3.17.2-0kitware1
+        cmake_version=3.17.2-0kitware1ubuntu20.04.1
+        ;;
+    arm64-bionic)
+        cmake_version=3.21.0-0kitware1ubuntu18.04.1
         ;;
     arm64-focal)
-        cmake_version=3.19.0-0kitware1
+        cmake_version=3.19.0-0kitware1ubuntu20.04.1
         ;;
     *)
         echo "Don't know which version of cmake to install for dpkg-architecture -q DEB_HOST_ARCH ${arch} and lsb_release -sc: ${os_release}"
