@@ -142,7 +142,7 @@ def prepare() {
       ws("workspace/exec_${env.EXECUTOR_NUMBER}/tvm/prepare") {
         init_git()
 
-        if (env.DETERMINE_DOCKER_IMAGES == 'yes') {
+        if (false) { //env.DETERMINE_DOCKER_IMAGES == 'yes') {
           sh(
             script: "./tests/scripts/determine_docker_images.py {% for image in images %}{{ image.name }}={% raw %}${{% endraw %}{{ image.name }}{% raw %}}{% endraw %} {% endfor %}",
             label: 'Decide whether to use tlcpack or tlcpackstaging for Docker images',

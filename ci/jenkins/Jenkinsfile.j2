@@ -60,14 +60,14 @@ aws_account_id = sh(
   ).trim()
 }
 def AWS_DEFAULT_REGION = 'us-west-2'
-ci_lint = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_lint:areusch-2ffreeze-dependencies-b71fcd65e-74"
-ci_gpu = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_gpu:areusch-2ffreeze-dependencies-7c2ab9443-74"
-ci_cpu = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_cpu:areusch-2ffreeze-dependencies-4481de51d-74"
-ci_wasm = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_wasm:areusch-2ffreeze-dependencies-b71fcd65e-74"
-ci_i386 = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_i386:areusch-2ffreeze-dependencies-b71fcd65e-74"
-ci_qemu = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_qemu:areusch-2ffreeze-dependencies-a0e688c07-74"
-ci_arm = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_arm:areusch-2ffreeze-dependencies-4f1e78198-74"
-ci_hexagon = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_hexagon:areusch-2ffreeze-dependencies-4530a443f-74"
+ci_lint = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_lint:areusch-2ffreeze-dependencies-f9152c6f6-110"
+ci_gpu = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_gpu:areusch-2ffreeze-dependencies-284d13f7e-110"
+ci_cpu = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_cpu:areusch-2ffreeze-dependencies-284d13f7e-110"
+ci_wasm = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_wasm:areusch-2ffreeze-dependencies-f9152c6f6-110"
+ci_i386 = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_i386:areusch-2ffreeze-dependencies-dc4ca6041-110"
+ci_qemu = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_qemu:areusch-2ffreeze-dependencies-bac330283-110"
+ci_arm = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_arm:areusch-2ffreeze-dependencies-c8e529d87-110"
+ci_hexagon = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_hexagon:areusch-2ffreeze-dependencies-284d13f7e-110"
 // <--- End of regex-scanned config.
 
 // Parameters to allow overriding (in Jenkins UI), the images
@@ -130,9 +130,9 @@ cancel_previous_build()
 
 prepare()
 
-if (rebuild_docker_images) {
-  build_docker_images()
-}
+// if (rebuild_docker_images) {
+//   build_docker_images()
+// }
 
 lint()
 

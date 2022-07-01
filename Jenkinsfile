@@ -45,7 +45,7 @@
 // 'python3 jenkins/generate.py'
 // Note: This timestamp is here to ensure that updates to the Jenkinsfile are
 // always rebased on main before merging:
-// Generated at 2022-06-13T17:28:53.960037
+// Generated at 2022-07-01T14:07:13.165963
 
 import org.jenkinsci.plugins.pipeline.modeldefinition.Utils
 // NOTE: these lines are scanned by docker/dev_common.sh. Please update the regex as needed. -->
@@ -58,14 +58,14 @@ aws_account_id = sh(
   ).trim()
 }
 def AWS_DEFAULT_REGION = 'us-west-2'
-ci_lint = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_lint:areusch-2ffreeze-dependencies-b71fcd65e-74"
-ci_gpu = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_gpu:areusch-2ffreeze-dependencies-7c2ab9443-74"
-ci_cpu = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_cpu:areusch-2ffreeze-dependencies-4481de51d-74"
-ci_wasm = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_wasm:areusch-2ffreeze-dependencies-b71fcd65e-74"
-ci_i386 = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_i386:areusch-2ffreeze-dependencies-b71fcd65e-74"
-ci_qemu = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_qemu:areusch-2ffreeze-dependencies-a0e688c07-74"
-ci_arm = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_arm:areusch-2ffreeze-dependencies-4f1e78198-74"
-ci_hexagon = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_hexagon:areusch-2ffreeze-dependencies-4530a443f-74"
+ci_lint = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_lint:areusch-2ffreeze-dependencies-f9152c6f6-110"
+ci_gpu = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_gpu:areusch-2ffreeze-dependencies-284d13f7e-110"
+ci_cpu = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_cpu:areusch-2ffreeze-dependencies-284d13f7e-110"
+ci_wasm = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_wasm:areusch-2ffreeze-dependencies-f9152c6f6-110"
+ci_i386 = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_i386:areusch-2ffreeze-dependencies-dc4ca6041-110"
+ci_qemu = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_qemu:areusch-2ffreeze-dependencies-bac330283-110"
+ci_arm = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_arm:areusch-2ffreeze-dependencies-c8e529d87-110"
+ci_hexagon = "${aws_account_id}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/ci_hexagon:areusch-2ffreeze-dependencies-284d13f7e-110"
 // <--- End of regex-scanned config.
 
 // Parameters to allow overriding (in Jenkins UI), the images
@@ -255,7 +255,7 @@ def prepare() {
       ws("workspace/exec_${env.EXECUTOR_NUMBER}/tvm/prepare") {
         init_git()
 
-        if (env.DETERMINE_DOCKER_IMAGES == 'yes') {
+        if (false) { //env.DETERMINE_DOCKER_IMAGES == 'yes') {
           sh(
             script: "./tests/scripts/determine_docker_images.py ci_arm=${ci_arm} ci_cpu=${ci_cpu} ci_gpu=${ci_gpu} ci_hexagon=${ci_hexagon} ci_i386=${ci_i386} ci_lint=${ci_lint} ci_qemu=${ci_qemu} ci_wasm=${ci_wasm} ",
             label: 'Decide whether to use tlcpack or tlcpackstaging for Docker images',
@@ -3499,9 +3499,9 @@ cancel_previous_build()
 
 prepare()
 
-if (rebuild_docker_images) {
-  build_docker_images()
-}
+// if (rebuild_docker_images) {
+//   build_docker_images()
+// }
 
 lint()
 
