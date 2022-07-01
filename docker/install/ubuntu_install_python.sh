@@ -54,5 +54,4 @@ pip3 config set global.no-cache-dir false
 # Now install the remaining base packages.
 pip3 install \
      --require-hashes \
-     -r /install/python/bootstrap/lockfiles/requirements-${PYTHON_VERSION}.txt \
-     -c /install/python/bootstrap/lockfiles/constraints-${PYTHON_VERSION}.txt
+     -r /install/python/bootstrap/lockfiles/constraints-${PYTHON_VERSION}.txt

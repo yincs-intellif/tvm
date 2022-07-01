@@ -34,7 +34,7 @@ RUN bash /install/ubuntu_install_googletest.sh
 
 ENV TVM_VENV /venv/apache-tvm-py3.8
 COPY python/bootstrap/lockfiles /install/python/bootstrap/lockfiles
-COPY install/ubuntu_install_python.sh /install/ubuntu2004_install_python.sh
+COPY install/ubuntu_install_python.sh /install/ubuntu_install_python.sh
 RUN bash /install/ubuntu_install_python.sh
 ENV PATH ${TVM_VENV}/bin:$PATH
 

@@ -22,7 +22,7 @@ FROM ubuntu:18.04
 
 COPY utils/apt-install-and-clear.sh /usr/local/bin/apt-install-and-clear
 
-RUN apt-get update --fix-missing && apt-install-and-clear -y wget git sudo make parallel
+RUN apt-get update --fix-missing && apt-install-and-clear -y wget git lsb-core make parallel sudo
 
 ENV TVM_VENV /venv/apache-tvm-py3.7
 COPY python/bootstrap/lockfiles /install/python/bootstrap/lockfiles
