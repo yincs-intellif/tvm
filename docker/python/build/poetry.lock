@@ -680,7 +680,7 @@ reference = "custom-pypi"
 
 [[package]]
 name = "imagesize"
-version = "1.3.0"
+version = "1.4.1"
 description = "Getting image size from png/jpeg/jpeg2000/gif file"
 category = "dev"
 optional = false
@@ -1064,25 +1064,6 @@ numpy = ">=1.16.6"
 protobuf = "*"
 six = "*"
 typing-extensions = ">=3.6.2.1"
-
-[package.extras]
-mypy = ["mypy (==0.600)"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.org/simple"
-reference = "custom-pypi"
-
-[[package]]
-name = "onnxoptimizer"
-version = "0.2.6"
-description = "Open Neural Network Exchange"
-category = "dev"
-optional = true
-python-versions = "*"
-
-[package.dependencies]
-onnx = "*"
 
 [package.extras]
 mypy = ["mypy (==0.600)"]
@@ -1604,7 +1585,7 @@ reference = "custom-pypi"
 
 [[package]]
 name = "setuptools-scm"
-version = "7.0.3"
+version = "7.0.4"
 description = "the blessed package to manage your versions by scm tags"
 category = "dev"
 optional = false
@@ -2265,7 +2246,7 @@ reference = "custom-pypi"
 
 [[package]]
 name = "typing-extensions"
-version = "4.2.0"
+version = "4.3.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
 category = "dev"
 optional = false
@@ -2384,24 +2365,24 @@ reference = "custom-pypi"
 ethosu = ["ethos-u-vela"]
 gpu = []
 importer-caffe = ["numpy", "protobuf", "scikit-image", "six"]
-importer-caffe2 = ["future", "torch"]
+importer-caffe2 = []
 importer-coreml = ["coremltools"]
 importer-darknet = ["opencv-python"]
 importer-keras = ["keras", "tensorflow", "tensorflow-estimator"]
 importer-mxnet = ["mxnet"]
 importer-oneflow = ["flowvision", "oneflow"]
-importer-onnx = ["future", "onnx", "onnxoptimizer", "onnxruntime", "torch", "torchvision"]
+importer-onnx = ["onnx", "onnxruntime"]
 importer-paddle = ["paddlepaddle"]
 importer-pytorch = ["future", "torch", "torchvision"]
 importer-tensorflow = ["tensorflow", "tensorflow-estimator"]
 importer-tflite = ["tensorflow", "tensorflow-estimator", "tflite"]
-tvmc = ["ethos-u-vela", "future", "onnx", "onnxoptimizer", "onnxruntime", "paddlepaddle", "tensorflow", "tflite", "torch", "torchvision", "xgboost"]
+tvmc = ["ethos-u-vela", "onnx", "onnxruntime", "tensorflow", "tflite", "xgboost"]
 xgboost = ["future", "xgboost"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7, <3.9"
-content-hash = "559f23b1fa6c5181fb8c7b856d1d7ee65405586e089871ed7de5f0fc1e6080e4"
+content-hash = "0afe72a0e2cbeb70622d48636bafd22a342cb7d78ba5dae7a31e05798b43bbb4"
 
 [metadata.files]
 absl-py = [
@@ -2652,8 +2633,8 @@ imageio = [
     {file = "imageio-2.19.3.tar.gz", hash = "sha256:0c9df80e42f2ee68bea92001e7fcf612aa149910efe040eb757f5ce323250ae1"},
 ]
 imagesize = [
-    {file = "imagesize-1.3.0-py2.py3-none-any.whl", hash = "sha256:1db2f82529e53c3e929e8926a1fa9235aa82d0bd0c580359c67ec31b2fddaa8c"},
-    {file = "imagesize-1.3.0.tar.gz", hash = "sha256:cd1750d452385ca327479d45b64d9c7729ecf0b3969a58148298c77092261f9d"},
+    {file = "imagesize-1.4.1-py2.py3-none-any.whl", hash = "sha256:0d8d18d08f840c19d0ee7ca1fd82490fdc3729b7ac93f49870406ddde8ef8d8b"},
+    {file = "imagesize-1.4.1.tar.gz", hash = "sha256:69150444affb9cb0d5cc5a92b3676f0b2fb7cd9ae39e947a5e11a36b4497cd4a"},
 ]
 importlib-metadata = [
     {file = "importlib_metadata-4.12.0-py3-none-any.whl", hash = "sha256:7401a975809ea1fdc658c3aa4f78cc2195a0e019c5cbc4c06122884e9ae80c23"},
@@ -3019,20 +3000,6 @@ onnx = [
     {file = "onnx-1.10.2-cp39-cp39-win_amd64.whl", hash = "sha256:0c176ef6e0c3b6bdfb69a43a66dcb8e6ba687437e302c79b4efb75027e1007dc"},
     {file = "onnx-1.10.2.tar.gz", hash = "sha256:24d73ca7dfd7e6c7339944f89554b4010719899337924fca1447d8f1b5db50d6"},
 ]
-onnxoptimizer = [
-    {file = "onnxoptimizer-0.2.6-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:b12a06ce647d9827553bf07070327de236b1f8b547fe6896755ae775ddc11f94"},
-    {file = "onnxoptimizer-0.2.6-cp36-cp36m-manylinux2014_x86_64.whl", hash = "sha256:cb751d8b44cef3099d5c2ccfadeb772ab9c56d300fd9dfa1fdaa3cf71e279b77"},
-    {file = "onnxoptimizer-0.2.6-cp36-cp36m-win_amd64.whl", hash = "sha256:f2978ef9fac7fd99c01ecef8fb7981a695f91eb2251d73ac25eeba57672e41fe"},
-    {file = "onnxoptimizer-0.2.6-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:eebfb8a63eb0d8710ce116b72b78ec20b04b4997b673ec02dccee0e54fe4869b"},
-    {file = "onnxoptimizer-0.2.6-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:5c4338ffbcb29ee5e7bccec01fa60b72528a495d680f30203be0c06fbb34949c"},
-    {file = "onnxoptimizer-0.2.6-cp37-cp37m-win_amd64.whl", hash = "sha256:4ba0d23a9f580f3579079e226f1e75ff9e3d2d6011ca71b9f6e4cbfd6a2d2113"},
-    {file = "onnxoptimizer-0.2.6-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:2e98f9f915929397eec5e98cf3ad217a2a56cf77d5b9f06b7878a2672bff6c20"},
-    {file = "onnxoptimizer-0.2.6-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:870bf2741716e2be4bd24a46de2fb27ffbe5ee215df3f891f531f747d19e398b"},
-    {file = "onnxoptimizer-0.2.6-cp38-cp38-win_amd64.whl", hash = "sha256:c4e6573a981949cc662e425c503e4d69440a02d5512a7693701ef1da1cbb0a33"},
-    {file = "onnxoptimizer-0.2.6-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:0c05bbf023af64394394e3c98597b45785634cbd4ea5d80b2f15134889d6239c"},
-    {file = "onnxoptimizer-0.2.6-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:9a9bbbaf58c739d68ec88f50d6f667cb131ccbafa6b0f91d0aee5886b1ce8a03"},
-    {file = "onnxoptimizer-0.2.6-cp39-cp39-win_amd64.whl", hash = "sha256:7557b4a22b656c46956a21ac806ac18b5889a2b0447fbaf65e37881dac1ff97c"},
-]
 onnxruntime = [
     {file = "onnxruntime-1.9.0-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:48f0fcf3c9aa6836584e64abe63fa7395c02066d3259bbdeb489b4d172e0127a"},
     {file = "onnxruntime-1.9.0-cp36-cp36m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7f9d772a6330cb85e7723f84e357320a1603e3824a92aab4ef36fc3a41e64f16"},
@@ -3386,8 +3353,8 @@ setuptools = [
     {file = "setuptools-62.6.0.tar.gz", hash = "sha256:990a4f7861b31532871ab72331e755b5f14efbe52d336ea7f6118144dd478741"},
 ]
 setuptools-scm = [
-    {file = "setuptools_scm-7.0.3-py3-none-any.whl", hash = "sha256:7934c856b042199eb44e1523b46abb881726b7d61b3c9b41a756e4ffb4adf73b"},
-    {file = "setuptools_scm-7.0.3.tar.gz", hash = "sha256:cf8ab8e235bed840cd4559b658af0d8e8a70896a191bbc510ee914ec5325332d"},
+    {file = "setuptools_scm-7.0.4-py3-none-any.whl", hash = "sha256:53a6f51451a84d891ca485cec700a802413bbc5e76ee65da134e54c733a6e44d"},
+    {file = "setuptools_scm-7.0.4.tar.gz", hash = "sha256:c27bc1f48593cfc9527251f1f0fc41ce282ea57bbc7fd5a1ea3acb99325fab4c"},
 ]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
@@ -3617,8 +3584,8 @@ typed-ast = [
     {file = "typed_ast-1.4.3.tar.gz", hash = "sha256:fb1bbeac803adea29cedd70781399c99138358c26d05fcbd23c13016b7f5ec65"},
 ]
 typing-extensions = [
-    {file = "typing_extensions-4.2.0-py3-none-any.whl", hash = "sha256:6657594ee297170d19f67d55c05852a874e7eb634f4f753dbd667855e07c1708"},
-    {file = "typing_extensions-4.2.0.tar.gz", hash = "sha256:f1c24655a0da0d1b67f07e17a5e6b2a105894e6824b92096378bb3668ef02376"},
+    {file = "typing_extensions-4.3.0-py3-none-any.whl", hash = "sha256:25642c956049920a5aa49edcdd6ab1e06d7e5d467fc00e0506c44ac86fbfca02"},
+    {file = "typing_extensions-4.3.0.tar.gz", hash = "sha256:e6d2677a32f47fc7eb2795db1dd15c1f34eff616bcaf2cfb5e997f854fa1c4a6"},
 ]
 urllib3 = [
     {file = "urllib3-1.26.9-py2.py3-none-any.whl", hash = "sha256:44ece4d53fb1706f667c9bd1c648f5469a2ec925fcf3a776667042d645472c14"},

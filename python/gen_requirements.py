@@ -111,8 +111,6 @@ REQUIREMENTS_BY_PIECE: RequirementsByPieceType = [
         (
             "Requirements for the Caffe2 importer",
             [
-                "future",  # Hidden dependency of torch.
-                "torch",
             ],
         ),
     ),
@@ -137,12 +135,8 @@ REQUIREMENTS_BY_PIECE: RequirementsByPieceType = [
         (
             "Requirements for the ONNX importer",
             [
-                "future",  # Hidden dependency of torch.
                 "onnx",
-                "onnxoptimizer",
                 "onnxruntime",
-                "torch",
-                "torchvision",
             ],
         ),
     ),
@@ -184,15 +178,10 @@ REQUIREMENTS_BY_PIECE: RequirementsByPieceType = [
             "Requirements for the tvmc command-line tool",
             [
                 "ethos-u-vela",
-                "future",  # Hidden dependency of torch.
                 "onnx",
-                "onnxoptimizer",
                 "onnxruntime",
-                "paddlepaddle",
                 "tensorflow",
                 "tflite",
-                "torch",
-                "torchvision",
                 "xgboost",
             ],
         ),
@@ -301,7 +290,6 @@ CONSTRAINTS = [
     ("numpy", []),
     ("oneflow", []),
     ("onnx", []),
-    ("onnxoptimizer", []),
     ("onnxruntime", []),
     ("opencv-python", []),
     (
