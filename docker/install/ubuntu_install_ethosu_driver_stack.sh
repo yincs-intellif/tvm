@@ -47,7 +47,7 @@ apt-install-and-clear -y \
     make \
     python3-dev \
     python3 \
-    ssh \
+    openssh-client \
     wget \
     xxd
 
